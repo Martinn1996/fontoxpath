@@ -21,13 +21,16 @@ class InlineFunction extends Selector {
 	 * @param  {!Selector}              functionBody
 	 */
 	constructor (paramDescriptions, returnType, functionBody) {
-		super(new Specificity({
-			[Specificity.EXTERNAL_KIND]: 1
-		}), {
-			// inline functions may use parameters, if they do, they can not be evaluated statically
-			canBeStaticallyEvaluated: !!paramDescriptions.length,
-			expectedResultOrder: Selector.RESULT_ORDERINGS.UNSORTED
-		});
+		super(
+			new Specificity({
+				[Specificity.EXTERNAL_KIND]: 1
+			}),
+			[functionBody],
+			{
+				// inline functions may use parameters, if they do, they can not be evaluated statically
+				canBeStaticallyEvaluated: !!paramDescriptions.length,
+				expectedResultOrder: Selector.RESULT_ORDERINGS.UNSORTED
+			});
 
 		this._paramDescriptions = paramDescriptions.map(([paramName, type]) => ([buildVarName(paramName), type]));
 		this._returnType = returnType;
